@@ -2,6 +2,7 @@
 
 <div align="center">
 
+[![Live Backend](https://img.shields.io/badge/Live_API-eventculture--backend.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://eventculture-backend.vercel.app/)
 [![React Native](https://img.shields.io/badge/React_Native-Expo_SDK_54-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactnative.dev/)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![Express.js](https://img.shields.io/badge/Express.js-Backend_API-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
@@ -12,6 +13,8 @@
 
 ### **ONE SCAN. ZERO QUEUES.**
 *A high-concurrency, cryptographic QR-based event operations ecosystem eliminating registration bottlenecks, paper badges, and meal voucher chaos.*
+
+🌐 **Production API URL:** [https://eventculture-backend.vercel.app](https://eventculture-backend.vercel.app/)
 
 </div>
 
@@ -275,6 +278,10 @@ Create a `.env` file in `eventculture/eventculture-backend/` based on `.env.exam
 
 ## 📡 API Reference
 
+### Base URLs
+- **Production (Vercel):** `https://eventculture-backend.vercel.app`
+- **Local Development:** `http://localhost:5000`
+
 ### Authentication
 - `POST /api/auth/organizer/login` — Organizer login with email and password / OTP
 - `POST /api/auth/user/login` — Participant passwordless login with phone / email
@@ -287,6 +294,11 @@ Create a `.env` file in `eventculture/eventculture-backend/` based on `.env.exam
 - `POST /api/participants/import-csv` — Bulk parse and ingest CSV records
 - `GET /api/passes/my-passes` — Retrieve digital wallet passes for current attendee
 - `POST /api/passes/validate` — Volunteer camera validation endpoint (atomic check-in)
+
+### Legal & Hosted Pages
+- `GET /privacy-organizer.html` — [Organizer App Privacy Policy](https://eventculture-backend.vercel.app/privacy-organizer.html)
+- `GET /privacy-user.html` — [Participant App Privacy Policy](https://eventculture-backend.vercel.app/privacy-user.html)
+- `GET /privacy-volunteer.html` — [Volunteer Scanner App Privacy Policy](https://eventculture-backend.vercel.app/privacy-volunteer.html)
 
 ---
 
