@@ -3,11 +3,11 @@ import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 import { storage } from './storage';
 
+// Production Vercel Backend URL
+const PROD_BACKEND_URL = 'https://eventculture-backend.vercel.app/api';
+
 // Automatically detect host IP when running on Expo Go / physical device or simulator
 const getBackendUrl = () => {
-  if (Platform.OS === 'web') {
-    return 'http://localhost:5000/api';
-  }
   const hostUri =
     Constants.expoConfig?.hostUri ||
     Constants.manifest2?.extra?.expoGo?.debuggerHost ||
@@ -16,7 +16,7 @@ const getBackendUrl = () => {
     const ip = hostUri.split(':')[0];
     return `http://${ip}:5000/api`;
   }
-  return Platform.OS === 'android' ? 'http://10.0.2.2:5000/api' : 'http://localhost:5000/api';
+  return PROD_BACKEND_URL;
 };
 
 const BACKEND_URL = getBackendUrl();
