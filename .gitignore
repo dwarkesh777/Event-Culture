@@ -103,3 +103,8 @@ participants_import.csv
 *.gif
 !README*.png
 !README*.jpg
+!**/assets/icon.png
+!**/assets/adaptive-icon.png
+!**/assets/favicon.png
+!**/assets/splash.png
+!**/assets/splash-icon.png
