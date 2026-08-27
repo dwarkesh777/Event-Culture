@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - EventCulture Organizer</title>
+  <meta name="description" content="Official Privacy Policy for EventCulture Organizer Mobile Application. Complete data governance, participant rosters, CSV processing, and security policy.">
+  <meta name="theme-color" content="#2563EB">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563EB;
+      --primary-dark: #1E40AF;
+      --primary-light: #60A5FA;
+      --primary-tint: #EFF6FF;
+      --primary-glow: rgba(37, 99, 235, 0.18);
+      --accent: #8B5CF6;
+      --accent-tint: #EDE9FE;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --surface-subtle: #F1F5F9;
+      --border: #E2E8F0;
+      --text-main: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #94A3B8;
+      --card-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 4px 6px -2px rgba(15, 23, 42, 0.03);
+      --header-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+    }
+
+    [data-theme="dark"] {
+      --primary: #3B82F6;
+      --primary-dark: #1D4ED8;
+      --primary-light: #93C5FD;
+      --primary-tint: rgba(37, 99, 235, 0.15);
+      --primary-glow: rgba(59, 130, 246, 0.25);
+      --accent: #A78BFA;
+      --accent-tint: rgba(139, 92, 246, 0.15);
+      --bg: #0B0F19;
+      --surface: #111827;
+      --surface-subtle: #1F2937;
+      --border: #1F2937;
+      --text-main: #F9FAFB;
+      --text-secondary: #CBD5E1;
+      --text-muted: #64748B;
+      --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+    a { color: var(--primary); text-decoration: none; transition: color 0.2s; }
+    a:hover { text-decoration: underline; }
+
+    .navbar {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--header-shadow);
+    }
+    [data-theme="dark"] .navbar { background: rgba(17, 24, 39, 0.85); }
+    .nav-container {
+      max-width: 1280px; margin: 0 auto; padding: 0.85rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+    .brand-logo {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, #2563EB 0%, #8B5CF6 100%);
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 800; font-size: 1.25rem;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+    .brand-title { font-size: 1.15rem; font-weight: 800; color: var(--text-main); line-height: 1.2; }
+    .brand-subtitle { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--primary); }
+
+    .app-switcher {
+      display: flex; align-items: center;
+      background: var(--surface-subtle); border: 1px solid var(--border);
+      border-radius: var(--radius-full); padding: 0.25rem; gap: 0.2rem;
+    }
+    .app-tab {
+      padding: 0.4rem 0.9rem; border-radius: var(--radius-full);
+      font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);
+      text-decoration: none; transition: all 0.2s ease; white-space: nowrap;
+    }
+    .app-tab:hover { color: var(--text-main); text-decoration: none; }
+    .app-tab.active { background: var(--primary); color: white; box-shadow: 0 2px 8px var(--primary-glow); }
+
+    .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+    .theme-toggle, .btn-icon {
+      background: var(--surface-subtle); border: 1px solid var(--border);
+      color: var(--text-main); width: 38px; height: 38px;
+      border-radius: var(--radius-md); display: flex; align-items: center;
+      justify-content: center; cursor: pointer; font-size: 1rem;
+    }
+
+    .hero {
+      background: radial-gradient(circle at 50% 0%, var(--primary-glow) 0%, transparent 70%);
+      padding: 3.5rem 1.5rem 2.5rem; text-align: center; border-bottom: 1px solid var(--border);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--primary-tint); color: var(--primary);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      padding: 0.35rem 1rem; border-radius: var(--radius-full);
+      font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .hero-badge .dot {
+      width: 8px; height: 8px; background: var(--primary);
+      border-radius: 50%; box-shadow: 0 0 8px var(--primary);
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--text-main) 30%, var(--primary) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p { color: var(--text-secondary); font-size: 1.05rem; max-width: 680px; margin: 0 auto 1.5rem; }
+    .hero-meta {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1.5rem; font-size: 0.85rem; color: var(--text-muted); flex-wrap: wrap;
+    }
+
+    .summary-grid {
+      max-width: 1200px; margin: -1.5rem auto 2.5rem; padding: 0 1.5rem;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.25rem; position: relative; z-index: 10;
+    }
+    .summary-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 1.5rem;
+      box-shadow: var(--card-shadow); transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .summary-card:hover { transform: translateY(-3px); border-color: var(--primary-light); }
+    .summary-icon {
+      width: 44px; height: 44px; border-radius: var(--radius-md);
+      background: var(--primary-tint); color: var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; margin-bottom: 1rem;
+    }
+    .summary-card h3 { font-size: 1rem; margin-bottom: 0.4rem; }
+    .summary-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+
+    .main-layout {
+      max-width: 1280px; margin: 0 auto; padding: 1rem 1.5rem 5rem;
+      display: grid; grid-template-columns: 280px minmax(0, 1fr);
+      gap: 3rem; align-items: start;
+    }
+    .toc-wrapper {
+      position: sticky; top: 5.5rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 1.25rem;
+      box-shadow: var(--card-shadow); max-height: calc(100vh - 7rem);
+      overflow-y: auto;
+    }
+    .toc-title {
+      font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 0.75rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .toc-list { list-style: none; display: flex; flex-direction: column; gap: 0.25rem; }
+    .toc-link {
+      display: block; padding: 0.45rem 0.65rem; border-radius: var(--radius-sm);
+      font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;
+    }
+    .toc-link:hover { background: var(--surface-subtle); color: var(--primary); text-decoration: none; }
+    .toc-link.active { background: var(--primary-tint); color: var(--primary); font-weight: 600; }
+
+    .policy-content {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 3rem; box-shadow: var(--card-shadow);
+    }
+    .section { margin-bottom: 3.5rem; scroll-margin-top: 6rem; }
+    .section-header {
+      display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem; border-bottom: 2px solid var(--surface-subtle);
+    }
+    .section-number {
+      width: 32px; height: 32px; border-radius: var(--radius-sm);
+      background: var(--primary-tint); color: var(--primary);
+      font-weight: 800; font-size: 0.9rem; display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .section h2 { font-size: 1.45rem; }
+    .section h3 { font-size: 1.1rem; margin: 1.5rem 0 0.6rem; color: var(--text-main); }
+    .section p { color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.95rem; }
+    .section ul, .section ol { margin-left: 1.5rem; margin-bottom: 1.25rem; color: var(--text-secondary); font-size: 0.95rem; }
+    .section li { margin-bottom: 0.5rem; }
+
+    .highlight-box {
+      background: var(--surface-subtle); border-left: 4px solid var(--primary);
+      padding: 1.25rem; border-radius: 0 var(--radius-md) var(--radius-md) 0; margin: 1.5rem 0;
+    }
+    .highlight-box p { margin: 0; color: var(--text-main); font-size: 0.9rem; font-weight: 500; }
+    .highlight-box.accent { border-left-color: var(--accent); background: var(--accent-tint); }
+
+    .table-container { overflow-x: auto; margin: 1.5rem 0; border: 1px solid var(--border); border-radius: var(--radius-md); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left; }
+    th { background: var(--surface-subtle); color: var(--text-main); font-weight: 700; padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); }
+    td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+    tr:last-child td { border-bottom: none; }
+
+    .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 600; }
+    .badge-primary { background: var(--primary-tint); color: var(--primary); }
+    .badge-accent { background: var(--accent-tint); color: var(--accent); }
+    .badge-success { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+    .badge-warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+
+    .contact-card {
+      background: linear-gradient(135deg, var(--surface-subtle) 0%, var(--surface) 100%);
+      border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 2rem; margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem;
+    }
+    .contact-row { display: flex; align-items: center; gap: 1rem; }
+    .contact-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--primary-tint); color: var(--primary);
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    }
+
+    footer {
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 3rem 1.5rem; text-align: center; color: var(--text-muted); font-size: 0.85rem;
+    }
+    .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+
+    @media print {
+      .navbar, .toc-wrapper, .theme-toggle, .app-switcher, .hero-badge, footer { display: none !important; }
+      .main-layout { display: block; padding: 0; }
+      .policy-content { border: none; box-shadow: none; padding: 0; }
+      body { background: white; color: black; }
+    }
+    @media (max-width: 900px) {
+      .main-layout { grid-template-columns: 1fr; gap: 2rem; }
+      .toc-wrapper { display: none; }
+      .policy-content { padding: 1.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-logo">EO</div>
+        <div>
+          <div class="brand-title">EventCulture</div>
+          <div class="brand-subtitle">Organizer Governance & Privacy</div>
+        </div>
+      </a>
+
+      <nav class="app-switcher" aria-label="Privacy Policy Selectors">
+        <a href="privacy-user.html" class="app-tab">Attendee App</a>
+        <a href="privacy-organizer.html" class="app-tab active">Organizer App</a>
+        <a href="privacy-volunteer.html" class="app-tab">Volunteer App</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" title="Toggle Theme" aria-label="Toggle Dark Mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="btn-icon" onclick="window.print()" title="Print / Save as PDF" aria-label="Print Policy">
+          🖨️
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      <span>Enterprise & Host Governance • Organizer Edition</span>
+    </div>
+    <h1>Privacy & Data Policy for Event Organizers</h1>
+    <p>Comprehensive guidelines on how EventCulture manages organizer profiles, event assets, participant rosters, CSV imports, volunteer delegation, and financial data.</p>
+    <div class="hero-meta">
+      <div>📅 <strong>Effective Date:</strong> August 27, 2026</div>
+      <div>🏢 <strong>Application:</strong> EventCulture Organizer (Host App)</div>
+      <div>🔒 <strong>Framework:</strong> DPA • GDPR Controller/Processor • ISO 27001 Controls</div>
+    </div>
+  </section>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-icon">📊</div>
+      <h3>Roster Protection</h3>
+      <p>Imported CSV attendee lists and participant data remain your exclusive property and are isolated within your tenant.</p>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon">🔑</div>
+      <h3>Role-Based Access</h3>
+      <p>Volunteer PIN generation and gate assignments enforce strict zero-trust credential boundaries on ground operations.</p>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon">📂</div>
+      <h3>Selective File Access</h3>
+      <p>Document Picker is triggered purely when you initiate CSV imports or upload official event guidelines and schedules.</p>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon">💳</div>
+      <h3>Bank-Grade Settlements</h3>
+      <p>Financial payout accounts and ticketing revenue metrics are safeguarded with tokenized banking infrastructure.</p>
+    </div>
+  </div>
+
+  <main class="main-layout">
+    <aside class="toc-wrapper">
+      <div class="toc-title">
+        <span>Table of Contents</span>
+        <span>📌</span>
+      </div>
+      <nav>
+        <ul class="toc-list">
+          <li><a href="#scope" class="toc-link">1. Scope & Relationship</a></li>
+          <li><a href="#organizer-data" class="toc-link">2. Organizer Data We Collect</a></li>
+          <li><a href="#permissions" class="toc-link">3. Device Permissions & Purpose</a></li>
+          <li><a href="#roster-csv" class="toc-link">4. Participant Rosters & CSVs</a></li>
+          <li><a href="#volunteer-delegation" class="toc-link">5. Volunteer Delegation & PINs</a></li>
+          <li><a href="#financial-revenue" class="toc-link">6. Revenue, Passes & Settlements</a></li>
+          <li><a href="#data-processor" class="toc-link">7. Data Processor Obligations</a></li>
+          <li><a href="#security" class="toc-link">8. Infrastructure & Security</a></li>
+          <li><a href="#retention-termination" class="toc-link">9. Data Retention & Account Closure</a></li>
+          <li><a href="#contact" class="toc-link">10. Contact & Enterprise Support</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <article class="policy-content">
+      <section id="scope" class="section">
+        <div class="section-header">
+          <div class="section-number">1</div>
+          <h2>Scope & Contractual Relationship</h2>
+        </div>
+        <p>This Privacy and Data Governance Policy governs the collection, processing, and handling of information collected via the <strong>EventCulture Organizer Mobile Application</strong> (Package / Scheme: <code>eventculture-organizer</code>) and associated Organizer Portal services.</p>
+        <div class="highlight-box">
+          <p>By registering as an Organizer on EventCulture, you agree to this Privacy Policy alongside our Organizer Terms of Service and Data Processing Addendum (DPA).</p>
+        </div>
+      </section>
+
+      <section id="organizer-data" class="section">
+        <div class="section-header">
+          <div class="section-number">2</div>
+          <h2>Organizer Information We Collect</h2>
+        </div>
+        <h3>A. Organization & Representative Details</h3>
+        <ul>
+          <li><strong>Identity & Account Details:</strong> Representative Name, official email address, phone number (OTP verified), organization/club/institution name, and official designation.</li>
+          <li><strong>Verification & KYC Credentials:</strong> Institutional authorization letters, student council accreditations, or business tax/registration documents.</li>
+          <li><strong>Event Setup & Creative Assets:</strong> Event titles, descriptions, venue coordinates, dates, custom registration questions, banner artworks, and stage layout maps.</li>
+        </ul>
+        <h3>B. Financial & Payout Information</h3>
+        <ul>
+          <li>Bank account numbers, IFSC/SWIFT codes, UPI handles, or payout settlement routing details collected solely for disbursing net ticket revenue.</li>
+        </ul>
+      </section>
+
+      <section id="permissions" class="section">
+        <div class="section-header">
+          <div class="section-number">3</div>
+          <h2>Device Permissions & Purpose Justification</h2>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Permission</th>
+                <th>System Library</th>
+                <th>Justification & Functionality</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Document Picker</strong></td>
+                <td><code>expo-document-picker</code></td>
+                <td>Enables organizers to upload participant roster files (<code>.csv</code>, <code>.xlsx</code>) for bulk ticket generation and import.</td>
+                <td><span class="badge badge-primary">User-Triggered</span></td>
+              </tr>
+              <tr>
+                <td><strong>Photo Library / Media</strong></td>
+                <td><code>expo-image-picker</code></td>
+                <td>Allows selecting event cover banners, club logos, venue maps, and sponsor badges from local storage.</td>
+                <td><span class="badge badge-primary">User-Triggered</span></td>
+              </tr>
+              <tr>
+                <td><strong>Date & Time Picker</strong></td>
+                <td><code>@react-native-community/datetimepicker</code></td>
+                <td>Provides native scheduling controls for event start/end times and pass registration windows.</td>
+                <td><span class="badge badge-success">UI Utility</span></td>
+              </tr>
+              <tr>
+                <td><strong>Secure Storage</strong></td>
+                <td><code>expo-secure-store</code></td>
+                <td>Cryptographically locks organizer JWT session tokens and event admin keys on the device keychain.</td>
+                <td><span class="badge badge-warning">Required</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="roster-csv" class="section">
+        <div class="section-header">
+          <div class="section-number">4</div>
+          <h2>Participant Rosters & CSV Import Processing</h2>
+        </div>
+        <ul>
+          <li><strong>Transient File Handling:</strong> Uploaded CSV files are parsed in-memory, converted to encrypted pass records, and discarded from temporary server memory.</li>
+          <li><strong>Organizer Ownership:</strong> Participant lists uploaded by you remain your intellectual property. We do not cross-market to your attendees.</li>
+        </ul>
+      </section>
+
+      <section id="volunteer-delegation" class="section">
+        <div class="section-header">
+          <div class="section-number">5</div>
+          <h2>Volunteer Delegation & Access Control Governance</h2>
+        </div>
+        <ul>
+          <li><strong>Dynamic Event Access PINs:</strong> Generate and instantly revoke 6-digit Volunteer PIN codes for specific checkpoints.</li>
+          <li><strong>Zero Financial Leakage:</strong> Staff members cannot view organizer revenues or attendee private phone numbers.</li>
+        </ul>
+      </section>
+
+      <section id="financial-revenue" class="section">
+        <div class="section-header">
+          <div class="section-number">6</div>
+          <h2>Revenue, Passes & Settlement Transparency</h2>
+        </div>
+        <p>All payout accounts are tokenized using AES-256 encryption. Financial ledgers are maintained in compliance with statutory taxation laws.</p>
+      </section>
+
+      <section id="data-processor" class="section">
+        <div class="section-header">
+          <div class="section-number">7</div>
+          <h2>Data Processor Obligations (GDPR / DPDP)</h2>
+        </div>
+        <div class="highlight-box accent">
+          <p><strong>Roles & Responsibilities:</strong> The <strong>Organizer acts as Data Controller</strong>, while <strong>EventCulture acts as Data Processor</strong>.</p>
+        </div>
+      </section>
+
+      <section id="security" class="section">
+        <div class="section-header">
+          <div class="section-number">8</div>
+          <h2>Infrastructure Security & Multi-Tenancy</h2>
+        </div>
+        <p>Strict database tenant isolation prevents cross-organizer data access. All traffic is secured via TLS 1.3 encryption.</p>
+      </section>
+
+      <section id="retention-termination" class="section">
+        <div class="section-header">
+          <div class="section-number">9</div>
+          <h2>Data Retention & Account Closure</h2>
+        </div>
+        <p>To terminate your organizer account and purge concluded event records, email <a href="mailto:organizer-support@eventculture.in">organizer-support@eventculture.in</a>.</p>
+      </section>
+
+      <section id="contact" class="section">
+        <div class="section-header">
+          <div class="section-number">10</div>
+          <h2>Contact & Enterprise Organizer Support</h2>
+        </div>
+        <div class="contact-card">
+          <div class="contact-row">
+            <div class="contact-icon">🏢</div>
+            <div>
+              <strong>EventCulture Organizer Relations</strong>
+              <div style="color: var(--text-secondary); font-size: 0.85rem;">Enterprise & Institutional Event Success</div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">📧</div>
+            <div>
+              <strong>Organizer Support:</strong>
+              <div><a href="mailto:organizers@eventculture.in">organizers@eventculture.in</a> / <a href="mailto:privacy@eventculture.in">privacy@eventculture.in</a></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="privacy-user.html">User App Privacy</a>
+      <span>•</span>
+      <a href="privacy-organizer.html">Organizer App Privacy</a>
+      <span>•</span>
+      <a href="privacy-volunteer.html">Volunteer App Privacy</a>
+    </div>
+    <p>© 2026 EventCulture Technologies. Organizer Console Edition. One Scan. Zero Queues.</p>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    function setTheme(theme) {
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeIcon.textContent = '☀️';
+        localStorage.setItem('ec-theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        themeIcon.textContent = '🌙';
+        localStorage.setItem('ec-theme', 'light');
+      }
+    }
+    const savedTheme = localStorage.getItem('ec-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    setTheme(savedTheme);
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('.toc-link');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 120;
+        if (pageYOffset >= sectionTop) current = section.getAttribute('id');
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventCulture Privacy Center - All Apps</title>
+  <meta name="description" content="EventCulture Central Privacy Center. Access official privacy policies for Attendee, Organizer, and Volunteer Gate Scanner applications.">
+  <meta name="theme-color" content="#1565F9">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1565F9;
+      --primary-dark: #0B3B91;
+      --primary-light: #4F8CFF;
+      --primary-tint: #EAF2FF;
+      --primary-glow: rgba(21, 101, 249, 0.18);
+      --org-color: #2563EB;
+      --vol-color: #10B981;
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --surface-subtle: #F1F5F9;
+      --border: #E2E8F0;
+      --text-main: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #94A3B8;
+      --card-shadow: 0 12px 36px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+      --radius-md: 14px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+    }
+
+    [data-theme="dark"] {
+      --primary: #3B82F6;
+      --primary-dark: #1D4ED8;
+      --primary-light: #60A5FA;
+      --primary-tint: rgba(59, 130, 246, 0.12);
+      --primary-glow: rgba(59, 130, 246, 0.25);
+      --bg: #0B0F19;
+      --surface: #111827;
+      --surface-subtle: #1F2937;
+      --border: #1F2937;
+      --text-main: #F9FAFB;
+      --text-secondary: #CBD5E1;
+      --text-muted: #64748B;
+      --card-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.6);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      transition: background-color 0.3s ease;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    [data-theme="dark"] .navbar {
+      background: rgba(17, 24, 39, 0.85);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #1565F9 0%, #00C6FF 100%);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 1.3rem;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .theme-toggle {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 4.5rem 1.5rem 3rem;
+      background: radial-gradient(circle at 50% 10%, var(--primary-glow) 0%, transparent 60%);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--primary-tint);
+      color: var(--primary);
+      padding: 0.4rem 1.1rem;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--text-main) 40%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-secondary);
+      font-size: 1.15rem;
+      max-width: 650px;
+      margin: 0 auto 2rem;
+    }
+
+    /* App Cards Grid */
+    .apps-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem 5rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .app-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .app-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.12);
+    }
+
+    .card-stripe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+    }
+
+    .card-stripe.user { background: linear-gradient(90deg, #1565F9, #00C6FF); }
+    .card-stripe.org { background: linear-gradient(90deg, #2563EB, #8B5CF6); }
+    .card-stripe.vol { background: linear-gradient(90deg, #10B981, #06B6D4); }
+
+    .card-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-badge.user { background: #EAF2FF; color: #1565F9; }
+    .card-badge.org { background: #EDE9FE; color: #7C3AED; }
+    .card-badge.vol { background: #ECFDF5; color: #059669; }
+
+    [data-theme="dark"] .card-badge.user { background: rgba(21, 101, 249, 0.2); color: #60A5FA; }
+    [data-theme="dark"] .card-badge.org { background: rgba(139, 92, 246, 0.2); color: #A78BFA; }
+    [data-theme="dark"] .card-badge.vol { background: rgba(16, 185, 129, 0.2); color: #6EE7B7; }
+
+    .app-card h2 {
+      font-size: 1.45rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .app-card p {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .app-features {
+      list-style: none;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .app-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.85rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      color: white;
+      transition: opacity 0.2s ease, transform 0.15s ease;
+    }
+
+    .btn-action:hover {
+      opacity: 0.92;
+      transform: scale(1.01);
+      text-decoration: none;
+    }
+
+    .btn-user { background: linear-gradient(135deg, #1565F9, #00A6FF); box-shadow: 0 4px 14px rgba(21, 101, 249, 0.3); }
+    .btn-org { background: linear-gradient(135deg, #2563EB, #8B5CF6); box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3); }
+    .btn-vol { background: linear-gradient(135deg, #10B981, #06B6D4); box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3); }
+
+    /* Trust Grid */
+    .trust-banner {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 3rem 2rem;
+      margin-top: 3rem;
+      text-align: center;
+    }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .trust-item h4 {
+      font-size: 1.1rem;
+      margin: 0.5rem 0 0.25rem;
+    }
+
+    .trust-item p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero { padding: 3rem 1.25rem 2rem; }
+      .grid-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-logo">EC</div>
+        <div>
+          <h2 style="font-size: 1.1rem; line-height: 1;">EventCulture</h2>
+          <span style="font-size: 0.72rem; color: var(--primary); font-weight: 700; text-transform: uppercase;">Privacy Governance</span>
+        </div>
+      </a>
+      <button class="theme-toggle" id="themeToggle" title="Toggle Theme" aria-label="Toggle Dark Mode">
+        <span id="themeIcon">🌙</span>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-badge">🔒 Transparent Data Trust Center</div>
+    <h1>Privacy Policy Ecosystem</h1>
+    <p>Select your specific application below to read the comprehensive, tailored privacy and data protection documentation.</p>
+  </section>
+
+  <main class="apps-section">
+    <div class="grid-3">
+
+      <!-- Card 1: User App -->
+      <div class="app-card">
+        <div class="card-stripe user"></div>
+        <div>
+          <div class="card-badge user">For Attendees & Fans</div>
+          <h2>EventCulture User App</h2>
+          <p>Designed for attendees discovering cultural, tech, and musical events, securing tickets, and entering venues via offline-ready digital passes.</p>
+          <ul class="app-features">
+            <li>🛡️ <strong>Zero Ad Brokers:</strong> No ad-network tracking or profiling.</li>
+            <li>🔐 <strong>Encrypted Passes:</strong> Signed passes stored on device.</li>
+            <li>🗑️ <strong>One-Tap Deletion:</strong> Full self-service account removal.</li>
+            <li>📱 <strong>Package:</strong> <code>eventculture-user</code></li>
+          </ul>
+        </div>
+        <a href="privacy-user.html" class="btn-action btn-user">
+          <span>Read Attendee Policy</span>
+          <span>→</span>
+        </a>
+      </div>
+
+      <!-- Card 2: Organizer App -->
+      <div class="app-card">
+        <div class="card-stripe org"></div>
+        <div>
+          <div class="card-badge org">For Hosts & Organizers</div>
+          <h2>EventCulture Organizer</h2>
+          <p>Built for committee leads and event hosts to create events, configure passes, process CSV participant rosters, and coordinate gate staff.</p>
+          <ul class="app-features">
+            <li>📂 <strong>Roster Ownership:</strong> Strict tenant data isolation.</li>
+            <li>🔑 <strong>PIN Access Delegation:</strong> Zero-trust staff codes.</li>
+            <li>💳 <strong>Settlement Privacy:</strong> Tokenized bank payouts.</li>
+            <li>📱 <strong>Package:</strong> <code>eventculture-organizer</code></li>
+          </ul>
+        </div>
+        <a href="privacy-organizer.html" class="btn-action btn-org">
+          <span>Read Organizer Policy</span>
+          <span>→</span>
+        </a>
+      </div>
+
+      <!-- Card 3: Volunteer App -->
+      <div class="app-card">
+        <div class="card-stripe vol"></div>
+        <div>
+          <div class="card-badge vol">For Gate Crew & Staff</div>
+          <h2>EventCulture Volunteer</h2>
+          <p>High-velocity gate scanner app engineered for ground crew to scan QR tickets in milliseconds with zero queue delays.</p>
+          <ul class="app-features">
+            <li>📷 <strong>Live Scanner:</strong> Zero video or photo storage.</li>
+            <li>⚡ <strong>Offline Ready:</strong> Queued scans sync automatically.</li>
+            <li>🚫 <strong>Privacy Partition:</strong> Masked attendee data.</li>
+            <li>📱 <strong>Package:</strong> <code>eventculture-volunteer</code></li>
+          </ul>
+        </div>
+        <a href="privacy-volunteer.html" class="btn-action btn-vol">
+          <span>Read Volunteer Policy</span>
+          <span>→</span>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Universal Standards -->
+    <div class="trust-banner">
+      <h3>Universal Privacy Commitments Across All Apps</h3>
+      <p style="color: var(--text-secondary); max-width: 600px; margin: 0.5rem auto 0; font-size: 0.9rem;">
+        Every line of code and API endpoint at EventCulture is built with privacy-by-design principles.
+      </p>
+      <div class="trust-grid">
+        <div class="trust-item">
+          <div style="font-size: 2rem;">🛡️</div>
+          <h4>GDPR & DPDP Ready</h4>
+          <p>Full support for data portability, rectifications, and erasure requests.</p>
+        </div>
+        <div class="trust-item">
+          <div style="font-size: 2rem;">🔒</div>
+          <h4>TLS 1.3 & AES-256</h4>
+          <p>Military-grade cryptographic encryption in transit and at rest.</p>
+        </div>
+        <div class="trust-item">
+          <div style="font-size: 2rem;">⚡</div>
+          <h4>One Scan. Zero Queues.</h4>
+          <p>High-throughput access validation without privacy compromises.</p>
+        </div>
+        <div class="trust-item">
+          <div style="font-size: 2rem;">📧</div>
+          <h4>Dedicated Desk</h4>
+          <p>Reach our Data Protection Officer at support@eventculture.in</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2026 EventCulture Technologies. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    
+    function setTheme(theme) {
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeIcon.textContent = '☀️';
+        localStorage.setItem('ec-theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        themeIcon.textContent = '🌙';
+        localStorage.setItem('ec-theme', 'light');
+      }
+    }
+
+    const savedTheme = localStorage.getItem('ec-theme') || 
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    setTheme(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+  </script>
+</body>
+</html>

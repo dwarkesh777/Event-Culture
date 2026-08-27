@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - EventCulture (User App)</title>
+  <meta name="description" content="Official Privacy Policy for EventCulture Attendee & User Mobile Application. Understand how we protect your personal data, tickets, and privacy.">
+  <meta name="theme-color" content="#1565F9">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1565F9;
+      --primary-dark: #0B3B91;
+      --primary-light: #4F8CFF;
+      --primary-tint: #EAF2FF;
+      --primary-glow: rgba(21, 101, 249, 0.18);
+      --accent: #06B6D4;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --surface-subtle: #F1F5F9;
+      --border: #E2E8F0;
+      --border-light: #F1F5F9;
+      --text-main: #0F172A;
+      --text-secondary: #475569;
+      --text-muted: #94A3B8;
+      --card-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 4px 6px -2px rgba(15, 23, 42, 0.03);
+      --header-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+    }
+
+    [data-theme="dark"] {
+      --primary: #3B82F6;
+      --primary-dark: #1D4ED8;
+      --primary-light: #60A5FA;
+      --primary-tint: rgba(59, 130, 246, 0.12);
+      --primary-glow: rgba(59, 130, 246, 0.25);
+      --accent: #22D3EE;
+      --bg: #0B0F19;
+      --surface: #111827;
+      --surface-subtle: #1F2937;
+      --border: #1F2937;
+      --border-light: #374151;
+      --text-main: #F9FAFB;
+      --text-secondary: #CBD5E1;
+      --text-muted: #64748B;
+      --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+      --header-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Top Navigation */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--header-shadow);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    [data-theme="dark"] .navbar {
+      background: rgba(17, 24, 39, 0.85);
+    }
+
+    .nav-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #1565F9 0%, #00C6FF 100%);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 1.25rem;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--primary);
+    }
+
+    .app-switcher {
+      display: flex;
+      align-items: center;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      padding: 0.25rem;
+      gap: 0.2rem;
+    }
+
+    .app-tab {
+      padding: 0.4rem 0.9rem;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .app-tab:hover {
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .app-tab.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 2px 8px var(--primary-glow);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .theme-toggle, .btn-icon {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle:hover, .btn-icon:hover {
+      background: var(--border);
+    }
+
+    /* Hero Banner */
+    .hero {
+      background: radial-gradient(circle at 50% 0%, var(--primary-glow) 0%, transparent 70%);
+      padding: 3.5rem 1.5rem 2.5rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--primary-tint);
+      color: var(--primary);
+      border: 1px solid rgba(21, 101, 249, 0.2);
+      padding: 0.35rem 1rem;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--primary);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--text-main) 30%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      max-width: 680px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Summary Highlights Grid */
+    .summary-grid {
+      max-width: 1200px;
+      margin: -1.5rem auto 2.5rem;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.25rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .summary-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--primary-light);
+    }
+
+    .summary-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: var(--primary-tint);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .summary-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .summary-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Layout Main */
+    .main-layout {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem 5rem;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 3rem;
+      align-items: start;
+    }
+
+    /* Table of Contents (Sticky) */
+    .toc-wrapper {
+      position: sticky;
+      top: 5.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      box-shadow: var(--card-shadow);
+      max-height: calc(100vh - 7rem);
+      overflow-y: auto;
+    }
+
+    .toc-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .toc-link {
+      display: block;
+      padding: 0.45rem 0.65rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      line-height: 1.4;
+      transition: all 0.15s ease;
+    }
+
+    .toc-link:hover {
+      background: var(--surface-subtle);
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .toc-link.active {
+      background: var(--primary-tint);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* Content Styling */
+    .policy-content {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 3rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .section {
+      margin-bottom: 3.5rem;
+      scroll-margin-top: 6rem;
+    }
+
+    .section:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--surface-subtle);
+    }
+
+    .section-number {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: var(--primary-tint);
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .section h2 {
+      font-size: 1.45rem;
+    }
+
+    .section h3 {
+      font-size: 1.1rem;
+      margin: 1.5rem 0 0.6rem;
+      color: var(--text-main);
+    }
+
+    .section p {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .section ul, .section ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1.25rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .section li {
+      margin-bottom: 0.5rem;
+    }
+
+    .highlight-box {
+      background: var(--surface-subtle);
+      border-left: 4px solid var(--primary);
+      padding: 1.25rem;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 1.5rem 0;
+    }
+
+    .highlight-box p {
+      margin: 0;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .highlight-box.warning {
+      border-left-color: var(--warning);
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .highlight-box.success {
+      border-left-color: var(--success);
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    /* Matrix Table */
+    .table-container {
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      text-align: left;
+    }
+
+    th {
+      background: var(--surface-subtle);
+      color: var(--text-main);
+      font-weight: 700;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-primary { background: var(--primary-tint); color: var(--primary); }
+    .badge-success { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+    .badge-warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+
+    /* Contact Box */
+    .contact-card {
+      background: linear-gradient(135deg, var(--surface-subtle) 0%, var(--surface) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .contact-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-tint);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 3rem 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Print styles */
+    @media print {
+      .navbar, .toc-wrapper, .theme-toggle, .app-switcher, .hero-badge, footer {
+        display: none !important;
+      }
+      .main-layout {
+        display: block;
+        padding: 0;
+      }
+      .policy-content {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+      }
+      body {
+        background: white;
+        color: black;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .toc-wrapper {
+        display: none;
+      }
+      .policy-content {
+        padding: 1.75rem;
+      }
+      .app-switcher {
+        overflow-x: auto;
+        max-width: 240px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="/privacy" class="brand">
+        <div class="brand-logo">EC</div>
+        <div>
+          <div class="brand-title">EventCulture</div>
+          <div class="brand-subtitle">User & Attendee Privacy</div>
+        </div>
+      </a>
+
+      <!-- App Switcher Tabs -->
+      <nav class="app-switcher" aria-label="Privacy Policy Selectors">
+        <a href="/privacy/user" class="app-tab active">Attendee App</a>
+        <a href="/privacy/organizer" class="app-tab">Organizer App</a>
+        <a href="/privacy/volunteer" class="app-tab">Volunteer App</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" title="Toggle Theme" aria-label="Toggle Dark Mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="btn-icon" onclick="window.print()" title="Print / Save as PDF" aria-label="Print Policy">
+          🖨️
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      <span>Official Privacy Document • User Edition</span>
+    </div>
+    <h1>Privacy Policy for Event Attendees</h1>
+    <p>We believe in complete transparency. Learn how EventCulture safeguards your personal information, ticket bookings, and digital event passes.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">📅 <strong>Effective Date:</strong> August 27, 2026</div>
+      <div class="hero-meta-item">📱 <strong>Application:</strong> EventCulture (Attendee App)</div>
+      <div class="hero-meta-item">🛡️ <strong>Compliance:</strong> GDPR • CCPA • India DPDP Act 2023</div>
+    </div>
+  </section>
+
+  <!-- Summary Highlights Grid -->
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-icon">🔐</div>
+      <h3>Encrypted Passes</h3>
+      <p>Your digital QR tickets are cryptographically signed and stored in your device's SecureStore for rapid offline entry.</p>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon">🚫</div>
+      <h3>No Ad Brokers</h3>
+      <p>We do not sell, rent, or trade your personal information or browsing patterns to third-party ad networks or brokers.</p>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon">📸</div>
+      <h3>Explicit Permissions</h3>
+      <p>Camera and photo access are strictly optional and only used when you explicitly choose to upload your profile avatar.</p>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon">🗑️</div>
+      <h3>Instant Deletion Rights</h3>
+      <p>You can delete your profile, booking records, and stored account information directly from in-app settings at any time.</p>
+    </div>
+  </div>
+
+  <!-- Main Content Layout -->
+  <main class="main-layout">
+    
+    <!-- Sticky Table of Contents -->
+    <aside class="toc-wrapper">
+      <div class="toc-title">
+        <span>Table of Contents</span>
+        <span>📌</span>
+      </div>
+      <nav>
+        <ul class="toc-list">
+          <li><a href="#introduction" class="toc-link">1. Introduction & Overview</a></li>
+          <li><a href="#information-we-collect" class="toc-link">2. Information We Collect</a></li>
+          <li><a href="#device-permissions" class="toc-link">3. Device Permissions</a></li>
+          <li><a href="#how-we-use-data" class="toc-link">4. How We Use Your Data</a></li>
+          <li><a href="#ticket-qr-technology" class="toc-link">5. QR Passes & Offline Storage</a></li>
+          <li><a href="#data-sharing" class="toc-link">6. Data Sharing & Third Parties</a></li>
+          <li><a href="#data-retention-deletion" class="toc-link">7. Retention & Account Deletion</a></li>
+          <li><a href="#data-security" class="toc-link">8. Security & Encryption</a></li>
+          <li><a href="#children-privacy" class="toc-link">9. Children's Privacy</a></li>
+          <li><a href="#statutory-rights" class="toc-link">10. Your Rights & Global Compliance</a></li>
+          <li><a href="#contact" class="toc-link">11. Contact & Grievance Officer</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Detailed Legal Content -->
+    <article class="policy-content">
+
+      <!-- Section 1 -->
+      <section id="introduction" class="section">
+        <div class="section-header">
+          <div class="section-number">1</div>
+          <h2>Introduction & Overview</h2>
+        </div>
+        <p>Welcome to <strong>EventCulture</strong> (referred to herein as "EventCulture", "we", "our", or "us"). This Privacy Policy applies exclusively to the <strong>EventCulture Attendee Mobile Application</strong> (Package / Scheme: <code>eventculture-user</code>).</p>
+        <p>EventCulture is engineered to make discovering, booking, and entering live cultural, academic, gaming, and musical events effortless. We respect your fundamental right to digital privacy and provide this policy to clearly describe what data is collected, why it is needed, how it is secured, and how you retain full control over your personal information.</p>
+        <div class="highlight-box">
+          <p>By downloading, installing, registering on, or using the EventCulture Attendee Application, you acknowledge and agree to the practices outlined in this Privacy Policy.</p>
+        </div>
+      </section>
+
+      <!-- Section 2 -->
+      <section id="information-we-collect" class="section">
+        <div class="section-header">
+          <div class="section-number">2</div>
+          <h2>Information We Collect</h2>
+        </div>
+        <p>We collect only the minimum necessary information required to authenticate your account, fulfill ticket reservations, and generate authorized entry passes.</p>
+        
+        <h3>A. Information You Voluntarily Provide</h3>
+        <ul>
+          <li><strong>Profile & Authentication Details:</strong> Name, email address, phone number (used for secure OTP verification), and optional profile avatar image.</li>
+          <li><strong>Registration Details:</strong> Academic institution, department, or student identity numbers if required by a specific event host for eligibility checks.</li>
+          <li><strong>Transaction Metadata:</strong> Pass selection, tier purchased (e.g., General Access, VIP, Kit Inclusive), payment transaction reference IDs, and timestamp. <em>(Note: We do not store raw credit/debit card numbers or bank CVVs; payments are processed directly via PCI-DSS certified gateways).</em></li>
+          <li><strong>Support Queries & Feedback:</strong> Content of communications submitted through our in-app support channels.</li>
+        </ul>
+
+        <h3>B. Information Collected Automatically</h3>
+        <ul>
+          <li><strong>Device & Telemetry Data:</strong> Mobile device model, operating system version (iOS/Android), unique device identifiers, and crash diagnostic logs to ensure application stability.</li>
+          <li><strong>App Usage Analytics:</strong> Pages visited, events bookmarked, and notification click-throughs to improve application usability.</li>
+        </ul>
+      </section>
+
+      <!-- Section 3 -->
+      <section id="device-permissions" class="section">
+        <div class="section-header">
+          <div class="section-number">3</div>
+          <h2>Device Permissions & Usage Breakdown</h2>
+        </div>
+        <p>In adherence to Google Play Developer Policies and Apple App Store Review Guidelines (Section 5.1.1), here is a complete and transparent breakdown of all device permissions requested by the EventCulture User App:</p>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Permission</th>
+                <th>Type</th>
+                <th>Why It Is Needed</th>
+                <th>Optional?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Photo Library / Media</strong> (<code>expo-image-picker</code>)</td>
+                <td><span class="badge badge-primary">Media</span></td>
+                <td>Allows you to select a profile picture or display photo from your camera roll.</td>
+                <td><span class="badge badge-success">Optional</span></td>
+              </tr>
+              <tr>
+                <td><strong>Push Notifications</strong></td>
+                <td><span class="badge badge-primary">Alerts</span></td>
+                <td>Sends real-time event reminders, pass issuance notices, schedule changes, and gate entry status alerts.</td>
+                <td><span class="badge badge-success">Optional</span></td>
+              </tr>
+              <tr>
+                <td><strong>Secure Storage</strong> (<code>expo-secure-store</code>)</td>
+                <td><span class="badge badge-primary">Security</span></td>
+                <td>Safely encrypts authentication session tokens and cached digital entry passes on device hardware keychain.</td>
+                <td><span class="badge badge-warning">Required for Login</span></td>
+              </tr>
+              <tr>
+                <td><strong>Internet / Network State</strong></td>
+                <td><span class="badge badge-primary">Connectivity</span></td>
+                <td>Communicates with EventCulture APIs to fetch event catalogs, sync pass status, and process registrations.</td>
+                <td><span class="badge badge-warning">Required</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p><em>You may grant or revoke these permissions at any time through your device operating system settings (Settings > EventCulture).</em></p>
+      </section>
+
+      <!-- Section 4 -->
+      <section id="how-we-use-data" class="section">
+        <div class="section-header">
+          <div class="section-number">4</div>
+          <h2>How We Use Your Data & Legal Basis</h2>
+        </div>
+        <p>We process your personal information strictly for legitimate operational purposes:</p>
+        <ul>
+          <li><strong>Pass Issuance & Access Verification:</strong> Generating unique, cryptographically signed dynamic QR codes for swift admission at venue gates.</li>
+          <li><strong>Authentication & Security:</strong> Verifying your phone number and email via Time-based One-Time Passwords (OTP) to prevent ticket scalping and identity fraud.</li>
+          <li><strong>Customer Service:</strong> Assisting you with ticket transfers, refunds, or technical inquiries.</li>
+          <li><strong>Event Communication:</strong> Sending critical venue updates, emergency alerts, parking guidelines, or itinerary modifications.</li>
+        </ul>
+      </section>
+
+      <!-- Section 5 -->
+      <section id="ticket-qr-technology" class="section">
+        <div class="section-header">
+          <div class="section-number">5</div>
+          <h2>QR Passes & Offline Storage Technology</h2>
+        </div>
+        <p>EventCulture features our proprietary <em>One Scan. Zero Queues.</em> pass architecture:</p>
+        <ul>
+          <li><strong>Cryptographic Digital Signatures:</strong> Every digital QR pass issued to your app contains an encrypted payload verified against event-specific public keys.</li>
+          <li><strong>Offline Gate Ready:</strong> Digital passes are saved locally on your device in secure encrypted storage. Even if cellular connectivity or venue Wi-Fi fails at stadium or auditorium gates, your QR pass remains accessible and verifiable.</li>
+          <li><strong>Scan Audit Logs:</strong> When a gate volunteer scans your pass, the scan timestamp, gate ID, and validator ID are recorded to ensure passes cannot be duplicated or reused.</li>
+        </ul>
+      </section>
+
+      <!-- Section 6 -->
+      <section id="data-sharing" class="section">
+        <div class="section-header">
+          <div class="section-number">6</div>
+          <h2>Data Sharing & Third-Party Disclosure</h2>
+        </div>
+        <div class="highlight-box success">
+          <p><strong>Zero Ad Tracking:</strong> EventCulture does NOT sell, rent, or lease attendee personal data to advertising networks, brokers, or data aggregators.</p>
+        </div>
+        <p>Data is shared strictly under the following controlled circumstances:</p>
+        <ul>
+          <li><strong>Verified Event Organizers:</strong> When you register for an event, the verified event organizer receives attendee roster information (Name, Email, Pass Category, Custom Questions) necessary for event coordination, safety capacity, and participant certification.</li>
+          <li><strong>Service Providers:</strong> Cloud infrastructure (AWS / Cloudflare), SMS/Email delivery gateways (Twilio / SendGrid), and payment processors bound by strict confidentiality and data protection agreements.</li>
+          <li><strong>Legal & Regulatory Mandates:</strong> Where required by law enforcement or competent judicial authorities pursuant to valid court orders.</li>
+        </ul>
+      </section>
+
+      <!-- Section 7 -->
+      <section id="data-retention-deletion" class="section">
+        <div class="section-header">
+          <div class="section-number">7</div>
+          <h2>Data Retention & Account Deletion Rights</h2>
+        </div>
+        <p>We retain your personal data for as long as your account remains active or as needed to provide you with pass records. You retain permanent ownership of your data.</p>
+        
+        <h3>How to Request Account & Data Deletion:</h3>
+        <ol>
+          <li><strong>In-App Self-Service:</strong> Navigate to <code>Profile</code> > <code>Settings</code> > <code>Security & Privacy</code> > <code>Delete Account</code>. Confirming this action permanently deletes your profile and authentication records.</li>
+          <li><strong>Direct Request via Email:</strong> Email our Data Protection Officer at <a href="mailto:support@eventculture.in">support@eventculture.in</a> with the subject line <em>"Account Deletion Request"</em> from your registered email address. We process and purge all non-statutory records within 14 business days.</li>
+        </ol>
+      </section>
+
+      <!-- Section 8 -->
+      <section id="data-security" class="section">
+        <div class="section-header">
+          <div class="section-number">8</div>
+          <h2>Data Security & Encryption</h2>
+        </div>
+        <p>We implement enterprise-grade technical and organizational safeguards:</p>
+        <ul>
+          <li><strong>End-to-End Encryption in Transit:</strong> All communications between the mobile application and EventCulture servers are secured with TLS 1.3 encryption.</li>
+          <li><strong>Encryption at Rest:</strong> Database assets and sensitive fields are encrypted using AES-256 standards.</li>
+          <li><strong>Strict Role-Based Access Control:</strong> Backend operational access is strictly limited to authorized personnel using multi-factor authentication.</li>
+        </ul>
+      </section>
+
+      <!-- Section 9 -->
+      <section id="children-privacy" class="section">
+        <div class="section-header">
+          <div class="section-number">9</div>
+          <h2>Children's Privacy (COPPA Compliance)</h2>
+        </div>
+        <p>The EventCulture User App is not intended for unsupervised use by individuals under the age of 13. We do not knowingly collect personal information from children under 13 without verifiable parental or school guardian consent. If you believe a child under 13 has provided us with personal data, please contact us immediately for prompt deletion.</p>
+      </section>
+
+      <!-- Section 10 -->
+      <section id="statutory-rights" class="section">
+        <div class="section-header">
+          <div class="section-number">10</div>
+          <h2>Your Statutory Rights (GDPR / CCPA / DPDP Act)</h2>
+        </div>
+        <p>Depending on your geographic jurisdiction, you enjoy specific legal rights regarding your personal data:</p>
+        <ul>
+          <li><strong>Right to Access & Portability:</strong> Obtain a copy of your personal data in a structured, commonly used machine-readable format.</li>
+          <li><strong>Right to Rectification:</strong> Request correction of inaccurate or incomplete personal records.</li>
+          <li><strong>Right to Erasure ("Right to be Forgotten"):</strong> Request full deletion of your profile data where retention is no longer legally mandated.</li>
+          <li><strong>Right to Restrict or Object to Processing:</strong> Opt-out of non-essential analytical processing.</li>
+        </ul>
+      </section>
+
+      <!-- Section 11 -->
+      <section id="contact" class="section">
+        <div class="section-header">
+          <div class="section-number">11</div>
+          <h2>Contact Us & Grievance Redressal</h2>
+        </div>
+        <p>If you have any questions, feedback, or grievance claims regarding this Privacy Policy or our data handling practices, please contact our team:</p>
+        
+        <div class="contact-card">
+          <div class="contact-row">
+            <div class="contact-icon">🏢</div>
+            <div>
+              <strong>EventCulture Technologies Pvt. Ltd.</strong>
+              <div style="color: var(--text-secondary); font-size: 0.85rem;">Data Privacy & Governance Desk</div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">📧</div>
+            <div>
+              <strong>Email Support:</strong>
+              <div><a href="mailto:support@eventculture.in">support@eventculture.in</a> / <a href="mailto:privacy@eventculture.in">privacy@eventculture.in</a></div>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">🌐</div>
+            <div>
+              <strong>Official Website:</strong>
+              <div><a href="https://eventculture.in" target="_blank" rel="noopener">https://eventculture.in</a></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="/privacy/user">User App Privacy</a>
+      <span>•</span>
+      <a href="/privacy/organizer">Organizer App Privacy</a>
+      <span>•</span>
+      <a href="/privacy/volunteer">Volunteer App Privacy</a>
+      <span>•</span>
+      <a href="/health">API Status</a>
+    </div>
+    <p>© 2026 EventCulture Technologies. All rights reserved. One Scan. Zero Queues.</p>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    
+    function setTheme(theme) {
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeIcon.textContent = '☀️';
+        localStorage.setItem('ec-theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        themeIcon.textContent = '🌙';
+        localStorage.setItem('ec-theme', 'light');
+      }
+    }
+
+    const savedTheme = localStorage.getItem('ec-theme') || 
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    setTheme(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('.toc-link');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 120;
+        if (pageYOffset >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

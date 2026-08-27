@@ -1,0 +1,105 @@
+# ============================================================
+# Node.js / npm
+# ============================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.npm
+.yarn/
+
+# ============================================================
+# Environment / Secrets
+# ============================================================
+.env
+.env.*
+!.env.example
+*.env
+
+# ============================================================
+# React Native / Expo
+# ============================================================
+# Expo
+.expo/
+.expo-shared/
+dist/
+web-build/
+
+# React Native build outputs
+android/app/build/
+android/build/
+android/.gradle/
+android/local.properties
+ios/build/
+ios/Pods/
+ios/*.xcworkspace
+ios/*.xcuserstate
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# Metro bundler cache
+.metro-cache/
+__pycache__/
+
+# ============================================================
+# Build outputs
+# ============================================================
+build/
+dist/
+out/
+.next/
+.nuxt/
+.cache/
+
+# ============================================================
+# Logs & Debug
+# ============================================================
+logs/
+*.log
+*.log.*
+lerna-debug.log*
+
+# ============================================================
+# OS / Editor
+# ============================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ============================================================
+# Test coverage
+# ============================================================
+coverage/
+*.lcov
+.nyc_output/
+
+# ============================================================
+# Misc project-specific files to exclude from repo
+# ============================================================
+*.mp4
+*.mov
+*.avi
+guest_test.csv
+staff_test.csv
+participants_import.csv
+*.png
+*.jpg
+*.jpeg
+*.gif
+!README*.png
+!README*.jpg
