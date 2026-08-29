@@ -98,10 +98,6 @@ export default function OrganizerLoginScreen() {
     slideX.value = withSpring(0);
   };
 
-  const handleDemoOrganizer = () => {
-    setEmail('organizer@eventculture.io');
-    setErrorMessage('');
-  };
 
   const animatedEmailStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: slideX.value }],
@@ -181,14 +177,6 @@ export default function OrganizerLoginScreen() {
                 style={styles.actionBtn}
               />
 
-              <TouchableOpacity
-                onPress={handleDemoOrganizer}
-                activeOpacity={0.7}
-                style={styles.demoFillBtn}
-              >
-                <Ionicons name="flash" size={15} color={COLORS.primary} />
-                <Text style={styles.demoFillText}>Use Demo Organizer Account</Text>
-              </TouchableOpacity>
               
               <View style={styles.signupPromptRow}>
                 <Text style={styles.signupPromptText}>New to EventCulture?</Text>
@@ -383,23 +371,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '700',
     flex: 1,
-  },
-  demoFillBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: SPACING.md,
-    paddingVertical: 12,
-    backgroundColor: COLORS.tintLight,
-    borderRadius: RADIUS.lg,
-    borderWidth: 1.5,
-    borderColor: '#BFDBFE',
-    gap: 8,
-  },
-  demoFillText: {
-    fontSize: 13,
-    fontWeight: '800',
-    color: COLORS.primaryDark,
   },
   otpHeader: {
     marginBottom: SPACING.sm,

@@ -74,10 +74,6 @@ export default function VolunteerLoginScreen() {
     }
   };
 
-  const handleDemoFill = () => {
-    setEmail('volunteer@eventculture.io');
-    setErrorMessage('');
-  };
 
   return (
     <KeyboardAvoidingView
@@ -135,14 +131,6 @@ export default function VolunteerLoginScreen() {
                 style={styles.actionBtn}
               />
 
-              <TouchableOpacity
-                onPress={handleDemoFill}
-                activeOpacity={0.7}
-                style={styles.demoFillBtn}
-              >
-                <Ionicons name="flash-outline" size={16} color={COLORS.primary} />
-                <Text style={styles.demoFillText}>Fill Demo Volunteer (All-Access)</Text>
-              </TouchableOpacity>
             </>
           ) : (
             <>
@@ -293,21 +281,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: SPACING.md,
     textAlign: 'center',
-  },
-  demoFillBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: SPACING.lg,
-    paddingVertical: 10,
-    backgroundColor: COLORS.tintLight,
-    borderRadius: RADIUS.lg,
-    gap: 6,
-  },
-  demoFillText: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: COLORS.primary,
   },
   otpHeader: {
     marginBottom: SPACING.sm,
