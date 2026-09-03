@@ -17,6 +17,10 @@ const connectDB = async () => {
     return mongoose.connection;
   }
 
+  if (!env.MONGODB_URI || (env.NODE_ENV === 'production' && env.MONGODB_URI.includes('127.0.0.1'))) {
+    throw new Error('MONGODB_URI is not configured for the production API.');
+  }
+
   try {
     const conn = await mongoose.connect(env.MONGODB_URI, {
       autoIndex: true,
@@ -28,10 +32,10 @@ const connectDB = async () => {
     return conn;
   } catch (error) {
     console.error(`❌ MongoDB Connection Error: ${error.message}`);
-    // Do not terminate process in serverless/dev, but log error
     if (env.NODE_ENV === 'production' && !process.env.VERCEL) {
       process.exit(1);
     }
+    throw new Error('Database connection failed. Check the production MONGODB_URI setting.');
   }
 };
 

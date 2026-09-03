@@ -39,7 +39,8 @@ export const useAuth = create((set, get) => ({
       const res = await authApi.sendOtp(email);
       return res.data;
     } catch (err) {
-      const msg = err.response?.data?.message || 'Failed to send OTP';
+      const msg = err.response?.data?.message ||
+        (err.request ? 'Cannot connect to the EventCulture server. Please try again.' : 'Failed to send OTP');
       set({ error: msg });
       throw new Error(msg);
     }
