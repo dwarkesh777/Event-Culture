@@ -485,6 +485,7 @@ const sendOrganizerSignupOtp = async (req, res, next) => {
       organizerCode: cleanOrganizerCode,
       folderName,
       isSetupRequired: true,
+      otpauthUrl,
       qrCodeUrl,
       secretKey: secret,
       ...(process.env.NODE_ENV !== 'production' && {

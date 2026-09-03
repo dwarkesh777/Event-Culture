@@ -17,6 +17,7 @@ import InputField from '../../components/InputField';
 import { OtpInput } from '../../components/OtpInput';
 import PrimaryButton from '../../components/PrimaryButton';
 import { Ionicons } from '@expo/vector-icons';
+import QRCode from 'react-native-qrcode-svg';
 
 export default function OrganizerSignupScreen() {
   const router = useRouter();
@@ -31,6 +32,7 @@ export default function OrganizerSignupScreen() {
   const [code, setCode] = useState('');
 
   const [qrCodeUrl, setQrCodeUrl] = useState('');
+  const [otpauthUrl, setOtpauthUrl] = useState('');
   const [secretKey, setSecretKey] = useState('');
   const [copiedKey, setCopiedKey] = useState(false);
 
@@ -106,6 +108,7 @@ export default function OrganizerSignupScreen() {
 
       const data = res?.data || {};
       setQrCodeUrl(data.qrCodeUrl || '');
+      setOtpauthUrl(data.otpauthUrl || '');
       setSecretKey(data.secretKey || '');
       setStep('SETUP');
       setCode('');
@@ -158,6 +161,11 @@ export default function OrganizerSignupScreen() {
   const folderPreview = organizerCode.trim()
     ? `organizer_${organizerCode.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '')}`
     : 'organizer_workspace';
+  const qrValue = otpauthUrl || (
+    secretKey
+      ? `otpauth://totp/EventCulture%20Organizer:${encodeURIComponent(email)}?secret=${secretKey}&issuer=EventCulture%20Organizer`
+      : ''
+  );
 
   return (
     <KeyboardAvoidingView
@@ -319,13 +327,13 @@ export default function OrganizerSignupScreen() {
               </View>
 
               {/* QR Code Container */}
-              {qrCodeUrl ? (
+              {qrValue || qrCodeUrl ? (
                 <View style={styles.qrFrame}>
-                  <Image
-                    source={{ uri: qrCodeUrl }}
-                    style={styles.qrImage}
-                    resizeMode="contain"
-                  />
+                  {qrValue ? (
+                    <QRCode value={qrValue} size={250} backgroundColor="#FFFFFF" />
+                  ) : (
+                    <Image source={{ uri: qrCodeUrl }} style={styles.qrImage} resizeMode="contain" />
+                  )}
                 </View>
               ) : null}
 

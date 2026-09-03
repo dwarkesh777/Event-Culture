@@ -8,6 +8,10 @@ const PROD_BACKEND_URL = 'https://eventculture-backend.vercel.app/api';
 
 // Automatically detect host IP when running on Expo Go / physical device or simulator
 const getBackendUrl = () => {
+  if (!__DEV__) {
+    return PROD_BACKEND_URL;
+  }
+
   const hostUri =
     Constants.expoConfig?.hostUri ||
     Constants.manifest2?.extra?.expoGo?.debuggerHost ||
