@@ -8,7 +8,15 @@
     "dev": "nodemon src/server.js",
     "seed": "node src/utils/seed.js"
   },
-  "keywords": ["eventculture", "events", "qr-scanner", "ticketing", "expo", "express", "mongodb"],
+  "keywords": [
+    "eventculture",
+    "events",
+    "qr-scanner",
+    "ticketing",
+    "expo",
+    "express",
+    "mongodb"
+  ],
   "author": "EventCulture Team",
   "license": "MIT",
   "dependencies": {
@@ -24,7 +32,9 @@
     "mongoose": "^8.5.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.9.14"
+    "nodemailer": "^6.9.14",
+    "otplib": "^13.5.0",
+    "qrcode": "^1.5.4"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"

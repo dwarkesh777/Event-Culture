@@ -623,7 +623,7 @@
   <!-- Top Navigation Bar -->
   <header class="navbar">
     <div class="nav-container">
-      <a href="/privacy" class="brand">
+      <a href="index.html" class="brand">
         <div class="brand-logo">EC</div>
         <div>
           <div class="brand-title">EventCulture</div>
@@ -633,9 +633,9 @@
 
       <!-- App Switcher Tabs -->
       <nav class="app-switcher" aria-label="Privacy Policy Selectors">
-        <a href="/privacy/user" class="app-tab active">Attendee App</a>
-        <a href="/privacy/organizer" class="app-tab">Organizer App</a>
-        <a href="/privacy/volunteer" class="app-tab">Volunteer App</a>
+        <a href="privacy-user.html" class="app-tab active">Attendee App</a>
+        <a href="privacy-organizer.html" class="app-tab">Organizer App</a>
+        <a href="privacy-volunteer.html" class="app-tab">Volunteer App</a>
       </nav>
 
       <div class="nav-actions">
@@ -940,18 +940,19 @@
   <!-- Footer -->
   <footer>
     <div class="footer-links">
-      <a href="/privacy/user">User App Privacy</a>
+      <a href="privacy-user.html">User App Privacy</a>
       <span>•</span>
-      <a href="/privacy/organizer">Organizer App Privacy</a>
+      <a href="privacy-organizer.html">Organizer App Privacy</a>
       <span>•</span>
-      <a href="/privacy/volunteer">Volunteer App Privacy</a>
+      <a href="privacy-volunteer.html">Volunteer App Privacy</a>
       <span>•</span>
-      <a href="/health">API Status</a>
+      <a href="index.html">Privacy Center</a>
     </div>
     <p>© 2026 EventCulture Technologies. All rights reserved. One Scan. Zero Queues.</p>
   </footer>
 
   <script>
+    // Dark / Light Mode Toggle with LocalStorage
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
     
@@ -976,6 +977,7 @@
       setTheme(currentTheme === 'dark' ? 'light' : 'dark');
     });
 
+    // Active TOC scrollspy
     const sections = document.querySelectorAll('.section');
     const navLinks = document.querySelectorAll('.toc-link');
 

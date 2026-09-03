@@ -2,14 +2,19 @@ const User = require('../models/User');
 const EventParticipant = require('../models/EventParticipant');
 const VolunteerAssignment = require('../models/VolunteerAssignment');
 const RefreshToken = require('../models/RefreshToken');
-const { createOtp, verifyOtp } = require('../services/otp.service');
-const { sendOtpEmail } = require('../services/email.service');
+const {
+  generateAuthenticatorSecret,
+  createOtpAuthUri,
+  generateQrCodeDataUrl,
+  verifyAuthenticatorCode,
+  generateDevToken,
+} = require('../services/authenticator.service');
 const { normalizePhone, normalizeEmail } = require('../services/csv.service');
 const { generateAccessToken, generateRefreshToken, verifyRefreshToken } = require('../utils/token');
 const { successResponse, errorResponse } = require('../utils/apiResponse');
 
 /**
- * 1. Participant Login: Request OTP (Email based)
+ * 1. Participant Login: Initiate Authenticator (First-time setup or verification request)
  */
 const sendUserOtp = async (req, res, next) => {
   try {
@@ -20,33 +25,57 @@ const sendUserOtp = async (req, res, next) => {
 
     const cleanEmail = normalizeEmail(email);
 
-    // Search in EventParticipants to see if participant is registered in any event
+    // Search in EventParticipants or User
     const participant = await EventParticipant.findOne({ email: cleanEmail });
+    let user = await User.findOne({ email: cleanEmail });
 
-    if (!participant) {
-      // Check if user exists in User collection as fallback
-      const user = await User.findOne({ email: cleanEmail, role: 'USER' });
-      if (!user) {
-        return errorResponse(
-          res,
-          'This email is not registered for any EventCulture event.',
-          404
-        );
-      }
+    if (!participant && !user) {
+      return errorResponse(
+        res,
+        'This email is not registered for any EventCulture event.',
+        404
+      );
     }
 
-    const participantName = participant ? participant.name : 'Participant';
+    // Auto-create user record for registered participant if not exists
+    if (!user && participant) {
+      user = await User.create({
+        name: participant.name,
+        email: cleanEmail,
+        mobileNumber: participant.mobileNumber || '',
+        role: 'USER',
+        isVerified: false,
+        isAuthenticatorSetup: false,
+      });
+    }
 
-    // Generate & Save hashed OTP
-    const { rawOtp } = await createOtp(cleanEmail, 'USER_EMAIL');
+    // If Authenticator is already configured for this user
+    if (user && user.isAuthenticatorSetup && user.authenticatorSecret) {
+      return successResponse(res, 'Please enter the 6-digit code from Google Authenticator.', {
+        email: cleanEmail,
+        isSetupRequired: false,
+        ...(process.env.NODE_ENV !== 'production' && {
+          devOtp: generateDevToken(user.authenticatorSecret),
+        }),
+      });
+    }
 
-    // Send OTP to registered email
-    await sendOtpEmail(cleanEmail, rawOtp, `Participant (${participantName})`);
+    // First time setup: Generate TOTP secret and QR code
+    const secret = generateAuthenticatorSecret();
+    user.tempAuthenticatorSecret = secret;
+    await user.save();
 
-    return successResponse(res, `OTP sent successfully to your email.`, {
+    const otpauthUrl = createOtpAuthUri(cleanEmail, secret, 'EventCulture Passes');
+    const qrCodeUrl = await generateQrCodeDataUrl(otpauthUrl);
+
+    return successResponse(res, 'Google Authenticator setup required. Scan QR code or enter key.', {
       email: cleanEmail,
-      // For developer ease in non-production
-      ...(process.env.NODE_ENV !== 'production' && { devOtp: rawOtp }),
+      isSetupRequired: true,
+      qrCodeUrl,
+      secretKey: secret,
+      ...(process.env.NODE_ENV !== 'production' && {
+        devOtp: generateDevToken(secret),
+      }),
     });
   } catch (error) {
     next(error);
@@ -54,42 +83,53 @@ const sendUserOtp = async (req, res, next) => {
 };
 
 /**
- * 2. Participant Login: Verify OTP
+ * 2. Participant Login: Verify Google Authenticator Code
  */
 const verifyUserOtp = async (req, res, next) => {
   try {
-    const { email, otp } = req.body;
-    if (!email || !otp) {
-      return errorResponse(res, 'Email and 6-digit OTP are required.', 400);
+    const { email, otp, code } = req.body;
+    const inputCode = otp || code;
+
+    if (!email || !inputCode) {
+      return errorResponse(res, 'Email and 6-digit Authenticator code are required.', 400);
     }
 
     const cleanEmail = normalizeEmail(email);
-
-    // Verify OTP
-    const verification = await verifyOtp(cleanEmail, 'USER_EMAIL', otp);
-    if (!verification.valid) {
-      return errorResponse(res, verification.message, 400);
-    }
-
-    // Find or create User record
-    let participant = await EventParticipant.findOne({ email: cleanEmail });
     let user = await User.findOne({ email: cleanEmail });
-
-    if (!user && participant) {
-      user = await User.create({
-        name: participant.name,
-        email: participant.email,
-        mobileNumber: participant.mobileNumber || '',
-        role: 'USER',
-        isVerified: true,
-      });
-    }
 
     if (!user) {
       return errorResponse(res, 'User record not found.', 404);
     }
 
+    let isValid = false;
+
+    if (!user.isAuthenticatorSetup) {
+      // First-time setup verification
+      if (!user.tempAuthenticatorSecret) {
+        return errorResponse(res, 'Authenticator setup session expired. Please enter email again.', 400);
+      }
+
+      isValid = verifyAuthenticatorCode(user.tempAuthenticatorSecret, inputCode);
+      if (!isValid) {
+        return errorResponse(res, 'Invalid Google Authenticator code. Please check your app and try again.', 400);
+      }
+
+      // Activate authenticator
+      user.authenticatorSecret = user.tempAuthenticatorSecret;
+      user.tempAuthenticatorSecret = '';
+      user.isAuthenticatorSetup = true;
+      user.isVerified = true;
+      await user.save();
+    } else {
+      // Standard recurring verification
+      isValid = verifyAuthenticatorCode(user.authenticatorSecret, inputCode);
+      if (!isValid) {
+        return errorResponse(res, 'Invalid Google Authenticator code. Please check your app and try again.', 400);
+      }
+    }
+
     // Link user ID to participant record if not linked
+    const participant = await EventParticipant.findOne({ email: cleanEmail });
     if (participant && !participant.userId) {
       participant.userId = user._id;
       await participant.save();
@@ -116,7 +156,7 @@ const verifyUserOtp = async (req, res, next) => {
 };
 
 /**
- * 3. Organizer Login: Send OTP
+ * 3. Organizer Login: Initiate Google Authenticator
  */
 const sendOrganizerOtp = async (req, res, next) => {
   try {
@@ -126,7 +166,6 @@ const sendOrganizerOtp = async (req, res, next) => {
     }
 
     const cleanEmail = normalizeEmail(email);
-
     let user = await User.findOne({ email: cleanEmail });
 
     if (!user) {
@@ -137,12 +176,33 @@ const sendOrganizerOtp = async (req, res, next) => {
       return errorResponse(res, 'This account does not have Organizer privileges.', 403);
     }
 
-    const { rawOtp } = await createOtp(cleanEmail, 'ORGANIZER_EMAIL');
-    await sendOtpEmail(cleanEmail, rawOtp, `Organizer (${user.name})`);
+    // If Authenticator is already set up
+    if (user.isAuthenticatorSetup && user.authenticatorSecret) {
+      return successResponse(res, 'Please enter the 6-digit code from Google Authenticator.', {
+        email: cleanEmail,
+        isSetupRequired: false,
+        ...(process.env.NODE_ENV !== 'production' && {
+          devOtp: generateDevToken(user.authenticatorSecret),
+        }),
+      });
+    }
 
-    return successResponse(res, 'Verification code sent to your email.', {
+    // First-time setup: Generate secret & QR code
+    const secret = generateAuthenticatorSecret();
+    user.tempAuthenticatorSecret = secret;
+    await user.save();
+
+    const otpauthUrl = createOtpAuthUri(cleanEmail, secret, 'EventCulture Organizer');
+    const qrCodeUrl = await generateQrCodeDataUrl(otpauthUrl);
+
+    return successResponse(res, 'Google Authenticator setup required. Scan QR code or enter key.', {
       email: cleanEmail,
-      ...(process.env.NODE_ENV !== 'production' && { devOtp: rawOtp }),
+      isSetupRequired: true,
+      qrCodeUrl,
+      secretKey: secret,
+      ...(process.env.NODE_ENV !== 'production' && {
+        devOtp: generateDevToken(secret),
+      }),
     });
   } catch (error) {
     next(error);
@@ -150,7 +210,7 @@ const sendOrganizerOtp = async (req, res, next) => {
 };
 
 /**
- * 4. Volunteer Login: Send OTP
+ * 4. Volunteer Login: Initiate Google Authenticator
  */
 const sendVolunteerOtp = async (req, res, next) => {
   try {
@@ -160,7 +220,6 @@ const sendVolunteerOtp = async (req, res, next) => {
     }
 
     const cleanEmail = normalizeEmail(email);
-
     const user = await User.findOne({ email: cleanEmail });
 
     if (!user) {
@@ -185,12 +244,33 @@ const sendVolunteerOtp = async (req, res, next) => {
       );
     }
 
-    const { rawOtp } = await createOtp(cleanEmail, 'VOLUNTEER_EMAIL');
-    await sendOtpEmail(cleanEmail, rawOtp, `Volunteer (${user.name})`);
+    // If Authenticator is already set up
+    if (user.isAuthenticatorSetup && user.authenticatorSecret) {
+      return successResponse(res, 'Please enter the 6-digit code from Google Authenticator.', {
+        email: cleanEmail,
+        isSetupRequired: false,
+        ...(process.env.NODE_ENV !== 'production' && {
+          devOtp: generateDevToken(user.authenticatorSecret),
+        }),
+      });
+    }
 
-    return successResponse(res, 'Verification code sent to your volunteer email.', {
+    // First time setup: Generate secret & QR code
+    const secret = generateAuthenticatorSecret();
+    user.tempAuthenticatorSecret = secret;
+    await user.save();
+
+    const otpauthUrl = createOtpAuthUri(cleanEmail, secret, 'EventCulture Volunteer');
+    const qrCodeUrl = await generateQrCodeDataUrl(otpauthUrl);
+
+    return successResponse(res, 'Google Authenticator setup required. Scan QR code or enter key.', {
       email: cleanEmail,
-      ...(process.env.NODE_ENV !== 'production' && { devOtp: rawOtp }),
+      isSetupRequired: true,
+      qrCodeUrl,
+      secretKey: secret,
+      ...(process.env.NODE_ENV !== 'production' && {
+        devOtp: generateDevToken(secret),
+      }),
     });
   } catch (error) {
     next(error);
@@ -198,26 +278,47 @@ const sendVolunteerOtp = async (req, res, next) => {
 };
 
 /**
- * 5. General Verify OTP (For Organizer and Volunteer)
+ * 5. General Verify Authenticator Code (For Organizer and Volunteer)
  */
 const verifyOtpHandler = async (req, res, next) => {
   try {
-    const { email, otp, role } = req.body;
-    if (!email || !otp) {
-      return errorResponse(res, 'Email and OTP are required.', 400);
+    const { email, otp, code, role } = req.body;
+    const inputCode = otp || code;
+
+    if (!email || !inputCode) {
+      return errorResponse(res, 'Email and 6-digit Authenticator code are required.', 400);
     }
 
     const cleanEmail = normalizeEmail(email);
-    const otpType = role === 'VOLUNTEER' ? 'VOLUNTEER_EMAIL' : 'ORGANIZER_EMAIL';
-
-    const verification = await verifyOtp(cleanEmail, otpType, otp);
-    if (!verification.valid) {
-      return errorResponse(res, verification.message, 400);
-    }
-
     const user = await User.findOne({ email: cleanEmail });
+
     if (!user) {
       return errorResponse(res, 'User record not found.', 404);
+    }
+
+    let isValid = false;
+
+    if (!user.isAuthenticatorSetup) {
+      if (!user.tempAuthenticatorSecret) {
+        return errorResponse(res, 'Authenticator setup session expired. Please enter email again.', 400);
+      }
+
+      isValid = verifyAuthenticatorCode(user.tempAuthenticatorSecret, inputCode);
+      if (!isValid) {
+        return errorResponse(res, 'Invalid Google Authenticator code. Please check your app and try again.', 400);
+      }
+
+      // Activate authenticator
+      user.authenticatorSecret = user.tempAuthenticatorSecret;
+      user.tempAuthenticatorSecret = '';
+      user.isAuthenticatorSetup = true;
+      user.isVerified = true;
+      await user.save();
+    } else {
+      isValid = verifyAuthenticatorCode(user.authenticatorSecret, inputCode);
+      if (!isValid) {
+        return errorResponse(res, 'Invalid Google Authenticator code. Please check your app and try again.', 400);
+      }
     }
 
     const accessToken = generateAccessToken(user);
@@ -307,7 +408,7 @@ const getMe = async (req, res, next) => {
 };
 
 /**
- * 9. Organizer Registration: Send Signup OTP
+ * 9. Organizer Registration: Send Signup Setup Code
  */
 const sendOrganizerSignupOtp = async (req, res, next) => {
   try {
@@ -330,8 +431,8 @@ const sendOrganizerSignupOtp = async (req, res, next) => {
       return errorResponse(res, 'Organizer code must be at least 3 alphanumeric characters.', 400);
     }
 
-    // Check if organizer email is already registered as an active organizer
-    const existingOrganizer = await User.findOne({ email: cleanEmail, role: 'ORGANIZER' });
+    // Check if organizer email is already registered and verified
+    const existingOrganizer = await User.findOne({ email: cleanEmail, role: 'ORGANIZER', isVerified: true });
     if (existingOrganizer) {
       return errorResponse(res, 'An organizer account with this email already exists. Please log in.', 400);
     }
@@ -346,18 +447,49 @@ const sendOrganizerSignupOtp = async (req, res, next) => {
       );
     }
 
-    // Generate & Save hashed OTP
-    const { rawOtp } = await createOtp(cleanEmail, 'ORGANIZER_SIGNUP_EMAIL');
+    // Generate TOTP secret and QR code for organizer signup
+    const secret = generateAuthenticatorSecret();
+    const folderName = `organizer_${cleanOrganizerCode.toLowerCase()}`;
 
-    // Send dedicated signup OTP email
-    const { sendSignupOtpEmail } = require('../services/email.service');
-    await sendSignupOtpEmail(cleanEmail, rawOtp, name.trim(), cleanOrganizerCode);
+    let user = await User.findOne({ email: cleanEmail });
+    if (!user) {
+      user = await User.create({
+        name: name.trim(),
+        email: cleanEmail,
+        mobileNumber: mobileNumber ? normalizePhone(mobileNumber) : '',
+        role: 'ORGANIZER',
+        organizerCode: cleanOrganizerCode,
+        organizationName: name.trim(),
+        folderName,
+        isVerified: false,
+        isActive: true,
+        isAuthenticatorSetup: false,
+        tempAuthenticatorSecret: secret,
+      });
+    } else {
+      user.name = name.trim();
+      user.mobileNumber = mobileNumber ? normalizePhone(mobileNumber) : user.mobileNumber;
+      user.role = 'ORGANIZER';
+      user.organizerCode = cleanOrganizerCode;
+      user.organizationName = name.trim();
+      user.folderName = folderName;
+      user.tempAuthenticatorSecret = secret;
+      await user.save();
+    }
 
-    return successResponse(res, 'Signup verification code sent to your email.', {
+    const otpauthUrl = createOtpAuthUri(cleanEmail, secret, 'EventCulture Organizer');
+    const qrCodeUrl = await generateQrCodeDataUrl(otpauthUrl);
+
+    return successResponse(res, 'Scan QR code in Google Authenticator to complete organizer registration.', {
       email: cleanEmail,
       organizerCode: cleanOrganizerCode,
-      folderName: `organizer_${cleanOrganizerCode.toLowerCase()}`,
-      ...(process.env.NODE_ENV !== 'production' && { devOtp: rawOtp }),
+      folderName,
+      isSetupRequired: true,
+      qrCodeUrl,
+      secretKey: secret,
+      ...(process.env.NODE_ENV !== 'production' && {
+        devOtp: generateDevToken(secret),
+      }),
     });
   } catch (error) {
     next(error);
@@ -365,14 +497,15 @@ const sendOrganizerSignupOtp = async (req, res, next) => {
 };
 
 /**
- * 10. Organizer Registration: Verify OTP & Create Account + Tenant Folder
+ * 10. Organizer Registration: Verify Authenticator & Finalize Account
  */
 const verifyOrganizerSignupOtp = async (req, res, next) => {
   try {
-    const { name, email, mobileNumber, organizerCode, otp } = req.body;
+    const { name, email, mobileNumber, organizerCode, otp, code } = req.body;
+    const inputCode = otp || code;
 
-    if (!email || !otp) {
-      return errorResponse(res, 'Email and 6-digit OTP code are required.', 400);
+    if (!email || !inputCode) {
+      return errorResponse(res, 'Email and 6-digit Authenticator code are required.', 400);
     }
     if (!name || !organizerCode) {
       return errorResponse(res, 'Organizer Name and Organizer Code are required.', 400);
@@ -382,10 +515,15 @@ const verifyOrganizerSignupOtp = async (req, res, next) => {
     const cleanOrganizerCode = organizerCode.trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '');
     const folderName = `organizer_${cleanOrganizerCode.toLowerCase()}`;
 
-    // Verify OTP against ORGANIZER_SIGNUP_EMAIL type
-    const verification = await verifyOtp(cleanEmail, 'ORGANIZER_SIGNUP_EMAIL', otp);
-    if (!verification.valid) {
-      return errorResponse(res, verification.message, 400);
+    const user = await User.findOne({ email: cleanEmail });
+    if (!user || !user.tempAuthenticatorSecret) {
+      return errorResponse(res, 'Registration session expired. Please restart signup.', 400);
+    }
+
+    // Verify Authenticator code
+    const isValid = verifyAuthenticatorCode(user.tempAuthenticatorSecret, inputCode);
+    if (!isValid) {
+      return errorResponse(res, 'Invalid Google Authenticator code. Please check your app and try again.', 400);
     }
 
     // Check if code was taken in the meantime
@@ -398,32 +536,19 @@ const verifyOrganizerSignupOtp = async (req, res, next) => {
       );
     }
 
-    // Find or create User record with ORGANIZER role and multi-tenant folder
-    let user = await User.findOne({ email: cleanEmail });
-
-    if (user) {
-      user.name = name.trim();
-      user.mobileNumber = mobileNumber ? normalizePhone(mobileNumber) : user.mobileNumber;
-      user.role = 'ORGANIZER';
-      user.organizerCode = cleanOrganizerCode;
-      user.organizationName = name.trim();
-      user.folderName = folderName;
-      user.isVerified = true;
-      user.isActive = true;
-      await user.save();
-    } else {
-      user = await User.create({
-        name: name.trim(),
-        email: cleanEmail,
-        mobileNumber: mobileNumber ? normalizePhone(mobileNumber) : '',
-        role: 'ORGANIZER',
-        organizerCode: cleanOrganizerCode,
-        organizationName: name.trim(),
-        folderName,
-        isVerified: true,
-        isActive: true,
-      });
-    }
+    // Finalize organizer account
+    user.name = name.trim();
+    user.mobileNumber = mobileNumber ? normalizePhone(mobileNumber) : user.mobileNumber;
+    user.role = 'ORGANIZER';
+    user.organizerCode = cleanOrganizerCode;
+    user.organizationName = name.trim();
+    user.folderName = folderName;
+    user.authenticatorSecret = user.tempAuthenticatorSecret;
+    user.tempAuthenticatorSecret = '';
+    user.isAuthenticatorSetup = true;
+    user.isVerified = true;
+    user.isActive = true;
+    await user.save();
 
     const accessToken = generateAccessToken(user);
     const refreshToken = await generateRefreshToken(user._id);
@@ -468,4 +593,3 @@ module.exports = {
   sendOrganizerSignupOtp,
   verifyOrganizerSignupOtp,
 };
-

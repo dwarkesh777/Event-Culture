@@ -63,6 +63,19 @@ const userSchema = new mongoose.Schema(
       index: true,
       default: '',
     },
+    isAuthenticatorSetup: {
+      type: Boolean,
+      default: false,
+      index: true,
+    },
+    authenticatorSecret: {
+      type: String,
+      default: '',
+    },
+    tempAuthenticatorSecret: {
+      type: String,
+      default: '',
+    },
   },
   {
     timestamps: true,

@@ -5,13 +5,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  Alert,
-  Platform,
   Dimensions,
   useWindowDimensions,
 } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useLocalSearchParams } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, RADIUS, SHADOWS, SPACING } from '../../constants/theme';
 import { volunteerScanApi } from '../../services/api';
 import { useVolunteerAuth } from '../../hooks/useVolunteerAuth';
@@ -22,9 +21,8 @@ import OrganizerSwitcherModal from '../../components/OrganizerSwitcherModal';
 import PrimaryButton from '../../components/PrimaryButton';
 import { Ionicons } from '@expo/vector-icons';
 
-const { height } = Dimensions.get('window');
-
 export default function VolunteerScannerScreen() {
+  const insets = useSafeAreaInsets();
   const { assignedEvent, selectedOrganizer } = useVolunteerAuth();
   const { width } = useWindowDimensions();
   const { openSidebar } = useSidebar();
@@ -157,58 +155,112 @@ export default function VolunteerScannerScreen() {
         onBarcodeScanned={isScanning ? handleBarcodeScanned : undefined}
       />
 
-      {/* High-Tech Overlay Frame with Blue Corners */}
-      <ScannerFrame
-        isTorchOn={torch}
-        onToggleTorch={() => setTorch(!torch)}
-        isScanning={isScanning}
-        categoryLabel={passName ? `SCANNING: ${passName.toUpperCase()}` : 'ALL ACCESS'}
-      />
+      {/* Camera HUD Overlay with Safe Area Insets */}
+      <View
+        style={[
+          styles.hudOverlay,
+          {
+            paddingTop: Math.max(insets.top + 8, 20),
+            paddingBottom: Math.max(insets.bottom + 12, 20),
+          },
+        ]}
+        pointerEvents="box-none"
+      >
+        {/* 1. TOP HEADER & STATUS BAR */}
+        <View style={styles.topSection} pointerEvents="box-none">
+          {/* Top Bar Navigation Row */}
+          <View style={styles.topNavRow} pointerEvents="box-none">
+            {!isDesktop && (
+              <TouchableOpacity
+                onPress={openSidebar}
+                style={styles.circleIconBtn}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="menu" size={22} color={COLORS.white} />
+              </TouchableOpacity>
+            )}
 
-      {/* Top Floating Active Organizer & Event Bar */}
-      <View style={styles.topWorkspaceBar}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-          {!isDesktop && (
-            <TouchableOpacity onPress={openSidebar} style={styles.scannerMenuBtn}>
-              <Ionicons name="menu" size={26} color={COLORS.white} />
+            <TouchableOpacity
+              onPress={() => setSwitcherVisible(true)}
+              style={styles.topWorkspacePill}
+              activeOpacity={0.8}
+            >
+              <View style={styles.scannerOrgCodeBadge}>
+                <Text style={styles.scannerOrgCodeText}>
+                  {(selectedOrganizer?.organizerCode || assignedEvent?.organizerCode || 'ORG').toUpperCase()}
+                </Text>
+              </View>
+              <Text style={styles.scannerEventTitle} numberOfLines={1} ellipsizeMode="tail">
+                {assignedEvent?.name || 'Select Event'}
+              </Text>
+              <View style={styles.scannerSwitchBtn}>
+                <Ionicons name="swap-horizontal" size={12} color={COLORS.primary} />
+                <Text style={styles.scannerSwitchText}>Switch</Text>
+              </View>
             </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            onPress={() => setSwitcherVisible(true)}
-            style={styles.topWorkspacePill}
-            activeOpacity={0.8}
-          >
-            <View style={styles.scannerOrgCodeBadge}>
-              <Text style={styles.scannerOrgCodeText}>
-                {(selectedOrganizer?.organizerCode || assignedEvent?.organizerCode || 'ORG').toUpperCase()}
+
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => setTorch(!torch)}
+              style={[styles.circleIconBtn, torch && styles.circleIconBtnActive]}
+            >
+              <Ionicons
+                name={torch ? 'flash' : 'flash-off'}
+                size={20}
+                color={torch ? '#FBBF24' : COLORS.white}
+              />
+            </TouchableOpacity>
+          </View>
+
+          {/* Sub Header Status Chips (Engine Active & Scan Category) */}
+          <View style={styles.statusChipsRow}>
+            <View style={styles.engineBadge}>
+              <View style={styles.engineDot} />
+              <Text style={styles.engineText}>ENGINE ACTIVE</Text>
+            </View>
+
+            <View style={styles.permBadge}>
+              <Ionicons name="scan-outline" size={12} color={COLORS.white} style={{ marginRight: 4 }} />
+              <Text style={styles.permBadgeText}>
+                {passName ? `SCANNING: ${passName.toUpperCase()}` : 'ALL ACCESS'}
               </Text>
             </View>
-            <Text style={styles.scannerEventTitle} numberOfLines={1}>
-              {assignedEvent?.name || 'Select Event'}
-            </Text>
-            <View style={styles.scannerSwitchBtn}>
-              <Ionicons name="swap-horizontal" size={13} color={COLORS.primary} />
-              <Text style={styles.scannerSwitchText}>Switch</Text>
-            </View>
+          </View>
+        </View>
+
+        {/* 2. CENTER VIEWFINDER RETICLE */}
+        <View style={styles.centerSection} pointerEvents="none">
+          <ScannerFrame isScanning={isScanning} />
+        </View>
+
+        {/* 3. BOTTOM CONTROLS & SECURITY BADGE */}
+        <View style={styles.bottomSection} pointerEvents="box-none">
+          <TouchableOpacity
+            onPress={() => setShowManualInput(!showManualInput)}
+            style={styles.manualEntryBtn}
+            activeOpacity={0.8}
+          >
+            <Ionicons name="keypad-outline" size={15} color={COLORS.white} />
+            <Text style={styles.manualEntryText}>Manual Pass Code Entry</Text>
           </TouchableOpacity>
+
+          <View style={styles.securityPill}>
+            <Ionicons name="shield-checkmark" size={13} color="#60A5FA" />
+            <Text style={styles.securityPillText}>Atomic Anti-Duplicate Protection</Text>
+          </View>
         </View>
       </View>
 
-      {/* Manual Token Trigger floating at bottom */}
-      <View style={styles.manualEntryBar}>
-        <TouchableOpacity
-          onPress={() => setShowManualInput(!showManualInput)}
-          style={styles.manualEntryBtn}
-        >
-          <Ionicons name="keypad-outline" size={16} color={COLORS.white} />
-          <Text style={styles.manualEntryText}>Manual Pass Code Entry</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Manual Input Sheet */}
+      {/* Manual Input Sheet Modal */}
       {showManualInput && (
-        <View style={[styles.manualSheet, SHADOWS.lg]}>
-          <Text style={styles.manualTitle}>Enter QR Pass Token</Text>
+        <View style={[styles.manualSheet, { bottom: Math.max(insets.bottom + 90, 100) }, SHADOWS.lg]}>
+          <View style={styles.manualSheetHeader}>
+            <Text style={styles.manualTitle}>Enter QR Pass Token</Text>
+            <TouchableOpacity onPress={() => setShowManualInput(false)} style={styles.closeSheetBtn}>
+              <Ionicons name="close" size={18} color={COLORS.textSecondary} />
+            </TouchableOpacity>
+          </View>
+
           <View style={styles.manualInputRow}>
             <TextInput
               value={manualToken}
@@ -217,6 +269,7 @@ export default function VolunteerScannerScreen() {
               placeholderTextColor={COLORS.textMuted}
               style={styles.tokenInput}
               autoCapitalize="none"
+              autoFocus
             />
             <TouchableOpacity
               onPress={() => {
@@ -224,6 +277,7 @@ export default function VolunteerScannerScreen() {
                 processToken(manualToken);
               }}
               style={styles.tokenSubmitBtn}
+              activeOpacity={0.8}
             >
               <Text style={styles.tokenSubmitText}>Verify</Text>
             </TouchableOpacity>
@@ -279,33 +333,46 @@ const styles = StyleSheet.create({
     marginTop: 8,
     lineHeight: 20,
   },
-  topWorkspaceBar: {
-    position: 'absolute',
-    top: 70,
-    left: 16,
-    right: 16,
-    alignItems: 'center',
-    zIndex: 20,
+  hudOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'space-between',
+    paddingHorizontal: SPACING.md,
   },
-  scannerMenuBtn: {
-    marginRight: 12,
+  topSection: {
+    width: '100%',
+    zIndex: 30,
+  },
+  topNavRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8,
+  },
+  circleIconBtn: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
     backgroundColor: 'rgba(15, 23, 42, 0.88)',
-    borderRadius: RADIUS.full,
-    padding: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.15)',
+    borderColor: 'rgba(255, 255, 255, 0.18)',
+  },
+  circleIconBtnActive: {
+    backgroundColor: 'rgba(251, 191, 36, 0.2)',
+    borderColor: '#FBBF24',
   },
   topWorkspacePill: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(15, 23, 42, 0.88)',
     paddingVertical: 6,
-    paddingHorizontal: 10,
+    paddingHorizontal: 8,
     borderRadius: RADIUS.full,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.15)',
-    gap: 8,
-    maxWidth: '96%',
+    borderColor: 'rgba(255, 255, 255, 0.18)',
+    gap: 6,
   },
   scannerOrgCodeBadge: {
     backgroundColor: COLORS.primary,
@@ -322,56 +389,134 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 12,
     fontWeight: '700',
-    flexShrink: 1,
+    flex: 1,
   },
   scannerSwitchBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    paddingHorizontal: 8,
+    paddingHorizontal: 7,
     paddingVertical: 3,
     borderRadius: RADIUS.full,
-    gap: 3,
+    gap: 2,
   },
   scannerSwitchText: {
     color: COLORS.white,
     fontSize: 10,
     fontWeight: '700',
   },
-  manualEntryBar: {
-    position: 'absolute',
-    bottom: 40,
-    width: '100%',
+  statusChipsRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
+    gap: 8,
+    marginTop: 10,
+    flexWrap: 'wrap',
+  },
+  engineBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(15, 23, 42, 0.85)',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: RADIUS.full,
+    gap: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.12)',
+  },
+  engineDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 3.5,
+    backgroundColor: COLORS.success,
+  },
+  engineText: {
+    color: COLORS.white,
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 0.5,
+  },
+  permBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(29, 78, 216, 0.9)',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: RADIUS.full,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.15)',
+  },
+  permBadgeText: {
+    color: COLORS.white,
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 0.3,
+  },
+  centerSection: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 10,
+  },
+  bottomSection: {
+    alignItems: 'center',
+    gap: 10,
+    zIndex: 30,
   },
   manualEntryBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(15, 23, 42, 0.8)',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    backgroundColor: 'rgba(15, 23, 42, 0.92)',
+    paddingHorizontal: 18,
+    paddingVertical: 9,
     borderRadius: RADIUS.full,
-    gap: 6,
+    gap: 7,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.18)',
   },
   manualEntryText: {
     color: COLORS.white,
     fontSize: 12,
     fontWeight: '700',
+    letterSpacing: 0.2,
+  },
+  securityPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(15, 23, 42, 0.85)',
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: RADIUS.full,
+    gap: 5,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.12)',
+  },
+  securityPillText: {
+    color: '#93C5FD',
+    fontSize: 11,
+    fontWeight: '600',
   },
   manualSheet: {
     position: 'absolute',
-    bottom: 90,
     left: 20,
     right: 20,
     backgroundColor: COLORS.white,
     borderRadius: RADIUS.xl,
     padding: SPACING.md,
+    zIndex: 100,
+  },
+  manualSheetHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
   },
   manualTitle: {
     fontSize: 14,
     fontWeight: '800',
     color: COLORS.textPrimary,
-    marginBottom: 8,
+  },
+  closeSheetBtn: {
+    padding: 4,
   },
   manualInputRow: {
     flexDirection: 'row',
@@ -387,6 +532,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: COLORS.textPrimary,
     fontWeight: '600',
+    backgroundColor: '#F8FAFC',
   },
   tokenSubmitBtn: {
     backgroundColor: COLORS.primary,
@@ -400,3 +546,4 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
+

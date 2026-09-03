@@ -8,6 +8,7 @@ import {
   useWindowDimensions,
   Platform,
   Alert,
+  Linking,
 } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -91,6 +92,18 @@ export default function Sidebar({ isDrawer = false }) {
     router.push(route);
     if (!isDesktop || isDrawer) {
       closeSidebar();
+    }
+  };
+
+  const handleOpenPrivacy = async () => {
+    if (!isDesktop || isDrawer) {
+      closeSidebar();
+    }
+    const url = 'https://eventculture-backend.vercel.app/privacy/organizer';
+    try {
+      await Linking.openURL(url);
+    } catch (error) {
+      console.warn('Cannot open privacy URL:', error);
     }
   };
 
@@ -239,6 +252,18 @@ export default function Sidebar({ isDrawer = false }) {
             <Text style={styles.clearDataText}>Clear Event Data</Text>
           </TouchableOpacity>
         )}
+
+        <TouchableOpacity
+          onPress={handleOpenPrivacy}
+          activeOpacity={0.7}
+          style={styles.privacyBtn}
+        >
+          <View style={styles.privacyIconWrapper}>
+            <Ionicons name="shield-checkmark-outline" size={18} color={COLORS.primary} />
+          </View>
+          <Text style={styles.privacyText}>Privacy Policy</Text>
+          <Ionicons name="open-outline" size={14} color={COLORS.textMuted} />
+        </TouchableOpacity>
 
         <TouchableOpacity
           onPress={handleLogout}
@@ -451,6 +476,27 @@ const styles = StyleSheet.create({
     borderTopWidth: 1.5,
     borderTopColor: COLORS.border,
     gap: 8,
+  },
+  privacyBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: RADIUS.md,
+    backgroundColor: '#F8FAFC',
+    borderWidth: 1.5,
+    borderColor: COLORS.border,
+    gap: 8,
+  },
+  privacyIconWrapper: {
+    width: 22,
+    alignItems: 'center',
+  },
+  privacyText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: COLORS.textPrimary,
+    flex: 1,
   },
   logoutBtn: {
     flexDirection: 'row',
