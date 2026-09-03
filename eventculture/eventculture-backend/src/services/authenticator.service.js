@@ -1,22 +1,18 @@
-const { generateSecret, generateURI, verifySync, generateSync } = require('otplib');
+const { authenticator } = require('otplib');
 const QRCode = require('qrcode');
 
 /**
  * Generate a new random base32 secret for Google Authenticator
  */
 const generateAuthenticatorSecret = () => {
-  return generateSecret();
+  return authenticator.generateSecret();
 };
 
 /**
  * Generate an otpauth:// URI for the user and issuer
  */
 const createOtpAuthUri = (email, secret, issuer = 'EventCulture') => {
-  return generateURI({
-    label: email,
-    issuer: issuer,
-    secret: secret,
-  });
+  return authenticator.keyuri(email, issuer, secret);
 };
 
 /**
@@ -42,12 +38,8 @@ const verifyAuthenticatorCode = (secret, token) => {
   try {
     const cleanToken = token.toString().trim().replace(/\s+/g, '');
     // Allow +/- 1 window (30 seconds before and after) for clock drift tolerance
-    const result = verifySync({
-      token: cleanToken,
-      secret: secret,
-      window: [1, 1],
-    });
-    return !!(result && result.valid);
+    authenticator.options = { window: 1 };
+    return authenticator.check(cleanToken, secret);
   } catch (error) {
     console.error('Authenticator verification error:', error);
     return false;
@@ -60,7 +52,7 @@ const verifyAuthenticatorCode = (secret, token) => {
 const generateDevToken = (secret) => {
   if (!secret) return null;
   try {
-    return generateSync({ secret });
+    return authenticator.generate(secret);
   } catch {
     return null;
   }
